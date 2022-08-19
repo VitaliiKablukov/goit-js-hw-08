@@ -7,11 +7,12 @@ if (localStorage.getItem(LOCALSTORAGE_KEY)) {
   form.elements.email.value = parseLocalStograde.email;
   form.elements.message.value = parseLocalStograde.message;
 }
+let formInputs = {};
 function saveDataForm(e) {
   //
   e.preventDefault();
   //
-  const formInputs = {};
+
   formInputs.email = form.elements.email.value;
   formInputs.message = form.elements.message.value;
 
@@ -21,9 +22,16 @@ function saveDataForm(e) {
 
 form.addEventListener('input', throttle(saveDataForm, 500));
 //
-form.addEventListener('submit', function (e) {
+form.addEventListener('submit', formSubmit);
+//
+function formSubmit(e) {
   e.preventDefault();
-  console.log(localStorage.getItem(LOCALSTORAGE_KEY));
-  form.reset();
-  localStorage.clear();
-});
+  if (form.elements.email.value && form.elements.message.value) {
+    console.log(localStorage.getItem(LOCALSTORAGE_KEY));
+    form.reset();
+    localStorage.clear();
+    formInputs = {};
+  } else {
+    alert('Заповніть всі поля будь ласка');
+  }
+}
